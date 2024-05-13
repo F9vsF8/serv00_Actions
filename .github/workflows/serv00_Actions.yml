@@ -1,0 +1,29 @@
+name: serv00_Actions
+
+on:
+  schedule:
+    - cron: '30 1 * * *'  # 每天 01:30 执行一次
+  workflow_dispatch:  # 手动触发
+
+jobs:
+  send_request:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+        
+      - name: Send POST Request
+        env:
+          PANEL_USERNAME: ${{ secrets.PANEL_USERNAME }}
+          PANEL_PASSWORD: ${{ secrets.PANEL_PASSWORD }}
+        run: |
+          curl -X POST \
+            -H "Content-Type: application/x-www-form-urlencoded" \
+            -H "Cookie: csrftoken=EmZMC1xdZBiuIsx79gUB1L3rp4Lw19M0yoA8Z9MclCqy58X7EDyIbgh0GHXeQ0Tk" \
+            -H "Origin: https://panel3.serv00.com" \
+            -H "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36" \
+            -H "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9" \
+            -H "Referer: https://panel3.serv00.com/login/" \
+            -d "csrfmiddlewaretoken=oK5PQPj7zmbZnovENikoW27D0h0jfNiviMGbdXy6Vnj3K4VEiFYv6xlchUc14EpP&username=${PANEL_USERNAME}&password=${PANEL_PASSWORD}" \
+            https://panel3.serv00.com/login/
