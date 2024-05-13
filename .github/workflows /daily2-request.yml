@@ -1,4 +1,4 @@
-name: Daily Request
+name: Daily2 Request
 
 on:
   schedule:
